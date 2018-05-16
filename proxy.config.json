@@ -1,0 +1,10 @@
+{
+  "/login":{
+    "target":"http://10.171.8.212:8089",
+    "secure":"false"
+  },
+  "/api/v1":{
+    "target":"http://10.171.8.212:8089",
+    "secure":"false"
+  }
+}
