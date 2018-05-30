@@ -15,28 +15,48 @@ export class ConsumerManagementService {
     'x-access-token': this._cookie.getStorage('token'),
     'secret': this._cookie.getStorage('secret')
   });
-  // 获取卡信息
+
+  /**
+   * 获取卡信息
+   * @param body
+   * @returns {Promise<any>}
+   */
   public getCrdInfo(body): Promise<any> {
     const uri = '/api/v1/cardno/query';
     return this.http.post(uri, body, {headers: this.header})
       .toPromise()
       .catch(this.handleError);
   }
-  // TODO 虚拟充值
+
+  /**
+   * 虚拟充值
+   * @param body
+   * @returns {Promise<any>}
+   */
   public recharge(body): Promise<any> {
     const uri = '/api/v1/cardno/recharge';
     return this.http.post(uri, body, {headers: this.header})
       .toPromise()
       .catch(this.handleError);
   }
-  // 清空余额功能
+
+  /**
+   * 清空余额功能
+   * @param body
+   * @returns {Promise<any>}
+   */
   public clearAmount(body): Promise<any> {
     const uri = '/api/v1/cradno/clear_amount';
     return this.http.post(uri, body, {headers: this.header})
       .toPromise()
       .catch(this.handleError);
   }
-  // 清空虚拟余额功能
+
+  /**
+   * 清除虚拟余额功能
+   * @param body
+   * @returns {Promise<any>}
+   */
   public updateRedpacket(body): Promise<any> {
     const uri = '/api/v1/cardno/udpate_redpacket';
     return this.http.post(uri, body, {headers: this.header})
