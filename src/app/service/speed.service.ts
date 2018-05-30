@@ -12,30 +12,31 @@ export class SpeedService {
     'x-access-token': this._cookie.getStorage('token'),
     'secret': this._cookie.getStorage('secret')
   });
-  data: any;
+
+  /**
+   * 查询SN
+   * @param body
+   * @returns {Promise<any>}
+   */
   public selectSN(body) {
     console.log(body);
     const uri = '/api/v1/device/selectSn';
     return this.http.post(uri, body, {headers: this.header})
       .toPromise()
-      .then(res => {
-        console.log(res);
-        this.data = res;
-        if (this.data.result === 0) {
-          return [];
-        } else {
-          return [this.data.result];
-        }
-      }).catch(this.handleError);
+      .catch(this.handleError);
   }
+
+  /**
+   * 更新设备延时
+   * @param body
+   * @returns {Promise<any>}
+   * @constructor
+   */
   public UpDate(body) {
     const uri = '/api/v1/device/speed';
     return this.http.post(uri, body, {headers: this.header})
       .toPromise()
-      .then( res => {
-        console.log(res);
-        return res;
-      }).catch(this.handleError);
+      .catch(this.handleError);
   }
   private handleError(error: any): Promise<any> {
     console.log('上分服务发生错误', error);
