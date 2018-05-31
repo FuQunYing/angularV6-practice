@@ -46,6 +46,44 @@ export class PowerService {
       .toPromise()
       .catch(this.handleError);
   }
+
+  /**
+   * 编辑用户
+   * @param body
+   * @param username
+   * @returns {Promise<any>}
+   */
+  public editUser(body, username): Promise<any> {
+    const uri = `/api/v1/user/${username}`;
+    return this.http.put(uri, body, {headers: this.headers})
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  /**
+   * 编辑角色
+   * @param body
+   * @param role
+   * @returns {Promise<any>}
+   */
+  public editRole(body, role): Promise<any> {
+    const uri = `/api/v1/role/${role}`;
+    return this.http.put(uri, body, {headers: this.headers})
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  /**
+   * 创建资源
+   * @param body
+   * @returns {Promise<any>}
+   */
+  public addRes(body): Promise<any> {
+    const uri = '/api/v1/res';
+    return this.http.post(uri, body, {headers: this.headers})
+      .toPromise()
+      .catch(this.handleError);
+  }
   handleError(error: any) {
     console.log('An error occurred:', error);
     return Promise.reject(error.message || error);
