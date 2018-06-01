@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-badge>
   `
 })
-export class HeaderNotifyComponenty implements OnInit {
+export class HeaderNotifyComponent implements OnInit {
   constructor() {}
   ngOnInit () {}
 }
