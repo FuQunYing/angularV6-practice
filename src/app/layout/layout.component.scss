@@ -1,0 +1,25 @@
+.wrapper{
+  position: relative;
+  width:100%;
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+.aside{
+  position: fixed;
+  top:0;
+  bottom: 0;
+  margin-top:64px;
+  width:200px;
+  background-color: #fff;
+  transition: width .2s cubic-bezier(.25,0,.15,1),transition .2s cubic-bezier(.25,0,.15,1);
+  z-index: 14;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.content{
+  margin: 88px 24px 24px 224px;
+}
