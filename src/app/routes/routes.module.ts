@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { QueryComponent } from './cardno/query/query.component';
+import {SharedModule} from '../shared/shared.module';
+import {PagesModule} from './pages/pages.module';
 
 @NgModule({
   imports: [
-    CommonModule
   ],
-  declarations: [QueryComponent]
+  declarations: []
 })
 export class RoutesModule { }
