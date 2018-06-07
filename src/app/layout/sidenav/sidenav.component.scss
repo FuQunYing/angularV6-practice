@@ -1,0 +1,46 @@
+.aside-inner {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  -ms-scroll-chaining: chained;
+  -ms-content-zooming: zoom;
+  -ms-scroll-rails: none;
+  -ms-content-zoom-limit-min: 100%;
+  -ms-content-zoom-limit-max: 500%;
+  -ms-scroll-snap-type: proximity;
+  -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+  -ms-overflow-style: none;
+}
+
+.aside-inner2::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: rgb(233, 222, 222);
+}
+
+.aside-inner::-webkit-scrollbar {
+  width: 0px;
+  background-color: #F5F5F5;
+}
+
+.aside-inner::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: rgba(75, 73, 73, .3);
+}
+
+.user-block {
+  padding: 24px 0;
+  margin: 0 auto;
+  display: block;
+  width: 152px;
+  cursor: pointer;
+  .user-block-dropdown {
+    display: flex;
+    align-items: center;
+  }
+  .ant-avatar {
+    margin-right: 8px;
+  }
+}
