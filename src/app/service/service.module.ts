@@ -21,19 +21,19 @@ export {
 @NgModule()
 export class ServiceModule {
   static forRoot(): ModuleWithProviders {
-  return {
-    ngModule: ServiceModule,
-    providers: [
-      AuthGuardService,
-      ConsumerManagementService,
-      CookieService,
-      DeviceService,
-      MaintainService,
-      OrderService,
-      PowerService,
-      SpeedService
-    ]
-  };
+    return {
+      ngModule: ServiceModule,
+      providers: [
+        AuthGuardService,
+        ConsumerManagementService,
+        CookieService,
+        DeviceService,
+        MaintainService,
+        OrderService,
+        PowerService,
+        SpeedService
+      ]
+    };
   }
 }
 
