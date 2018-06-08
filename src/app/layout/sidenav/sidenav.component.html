@@ -1,3 +1,21 @@
-<p>
-  sidenav works!
-</p>
+<div class="aside-inner">
+  <nz-dropdown class="user-block" [nzTrigger]="'click'">
+    <div class="user-block-dropdown" nz-dropdown>
+      <nz-avatar [nzSize]="'large'" [nzText]="firstName"></nz-avatar>
+      <div class="info">
+        <strong>{{username}}</strong>
+        <p class="text-truncate">{{roleTitle}}</p>
+      </div>
+    </div>
+  </nz-dropdown>
+  <ul nz-menu [nzMode]="'inline'" style="height: 100%; width: 100%;">
+    <li nz-submenu *ngFor="let group of routerList.components" [nzOpen]="group.name === choose" ng-reflect-nz-open="false">
+      <b [title]><i class="anticon {{group.icon}}"></i>{{group.zh}}</b>
+      <ul>
+        <li nz-menu-item routerLinkActive="ant-menu-item-selected" *ngFor="let component of group.children">
+          <a routerLink="/{{component.path}}">{{component.zh}}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

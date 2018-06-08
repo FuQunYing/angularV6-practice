@@ -23,6 +23,7 @@ export class SidenavComponent implements OnInit {
   constructor( private router: Router, private title: Title, private _cookie: CookieService) { }
 
   ngOnInit() {
+    this.init();
   }
 
   init() {
@@ -69,7 +70,7 @@ export class SidenavComponent implements OnInit {
           const chooseArr = currentDemoComponent.path.split('/');
           this.choose = chooseArr[0];
         }
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
       }
     });
   }
