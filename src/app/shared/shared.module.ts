@@ -14,7 +14,7 @@ import {DefaultInterceptor} from '../core/net/default.interceptor';
     ReactiveFormsModule,
     RouterModule,
     HttpClientModule,
-    NgZorroAntdModule.forRoot(),
+    NgZorroAntdModule,
     NgxMdModule.forRoot()
   ],
   exports: [
