@@ -13,6 +13,7 @@ import {AuthGuardService} from '../../service/auth-guard.service';
 const routes: Routes = [
   {path: '', redirectTo: 'query', pathMatch: 'full', canActivate: [AuthGuardService]},
   {path: 'query', component: QueryComponent, canActivate: [AuthGuardService]},
+  {path: 'bind', component: BindComponent, canActivate: [AuthGuardService]},
   {path: 'activate', component: ActivateComponent, canActivate: [AuthGuardService]},
   {path: 'speed', component: SpeedComponent, canActivate: [AuthGuardService]},
   {path: 'activate_product', component: ActivateProductComponent, canActivate: [AuthGuardService]}
@@ -33,7 +34,7 @@ const routes: Routes = [
   exports: [
     RouterModule
   ],
-  providers:[
+  providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: DefaultInterceptor,

@@ -8,12 +8,12 @@ export const ROUTER_LIST = {
         {
           'label': 'query',
           'path': 'device/query',
-          'zh': '设备管理'
+          'zh': '设备查询'
         },
         {
           'label': 'bind',
           'path': 'device/bind',
-          'zh': '设备管理'
+          'zh': '设备绑定'
         },
         {
           'label': 'activate',
