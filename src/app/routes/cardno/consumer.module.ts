@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {SharedModule} from '../../shared/shared.module';
 import {Routes, RouterModule} from '@angular/router';
-import {QueryComponent} from '../order/query/query.component';
+import {QueryComponent} from './query/query.component';
 import {RechargeComponent} from './recharge/recharge.component';
 import {AuthGuardService} from '../../service/auth-guard.service';
 
