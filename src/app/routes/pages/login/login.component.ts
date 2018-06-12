@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       console.log(res);
       this.loadingFlag = false;
       this.res = res;
-      if (this.res.recode !== 0) {
+      if (this.res.rcode !== 0) {
         console.log('登录失败');
       } else {
         this._cookie.setStorage('token', this.res.result.token);

@@ -1,3 +1,29 @@
-<p>
-  login works!
-</p>
+<nz-card style="margin: 100px auto; width: 400px" (keydown)="keyDown($event)" [nzTitle]="'请登录'">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <!--<nz-form-label>用户名</nz-form-label>-->
+      <nz-form-control>
+        <nz-input-group nzPrefixIcon="anticon anticon-user">
+          <input type="text" nz-input formControlName="userName" placeholder="Username" [nzSize]="'large'">
+        </nz-input-group>
+        <nz-form-explain *ngIf="validateForm.get('userName').dirty && validateForm.get('userName').errors">Please input your username!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <!--<nz-form-label>密码</nz-form-label>-->
+      <nz-form-control>
+        <nz-input-group nzPrefixIcon="anticon anticon-lock">
+          <input type="password" nz-input formControlName="password" placeholder="Password"  [nzSize]="'large'">
+        </nz-input-group>
+        <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please input your Password!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control style="text-align: center">
+        <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="_submitForm();false" type="button" [nzLoading]="loadingFlag">登录</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-card>

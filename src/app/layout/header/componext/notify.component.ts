@@ -4,9 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-header-notify',
   template: `
     <nz-badge [nzCount]="">
-      <ng-template #content>
-        <i class="anticon anticon-bell"></i>
-      </ng-template>
+        <i class="anticon anticon-bell" style="color:#fff;font-size: 16px;"></i>
     </nz-badge>
   `
 })

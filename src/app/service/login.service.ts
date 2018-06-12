@@ -17,7 +17,6 @@ export class LoginService {
     };
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.http.post(uri, body, {headers: header}).map(res => {
-      console.log(res);
       return res;
     });
   }
