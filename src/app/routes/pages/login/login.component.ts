@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
         this._cookie.setStorage('secret', this.res.result.secret);
         this._cookie.setStorage('role', this.res.result.role);
         this._cookie.setStorage('title', this.res.result.title);
-        this._cookie.setCookie('login', 'true', 60);
+        this._cookie.setCookie('login', 'true', 2);
         this.router.navigate(['device']);
         const powerArr = {
           arr: this.res.result.resource
@@ -50,18 +50,24 @@ export class LoginComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.isLogin();
     // 防止后退触发
-    const load = this._cookie.getStorage('username');
+    /*const load = this._cookie.getStorage('username');
     console.log(load);
     if (load) {
       localStorage.clear();
       location.reload();
-    }
+    }*/
     this.validateForm = this.fb.group({
       userName: [null, [Validators.required]],
       password: [null, [Validators.required]],
       remember: [true]
     });
   }
-
+//  判断cookie是否已经存在登录
+  isLogin() {
+    if (this._cookie.getCookie('login') === 'true') {
+      this.router.navigate(['device']);
+    }
+  }
 }

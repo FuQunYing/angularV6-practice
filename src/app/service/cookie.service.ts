@@ -14,7 +14,7 @@ export class CookieService {
    */
   setCookie(name: string, value: string, time: number) {
     const d = new Date();
-    d.setTime(d.getTime() + (time * 60 * 1000)); // 换算成毫秒数
+    d.setTime(d.getTime() + (time * 60 * 60 * 1000)); // 传入小时 换算成毫秒数
     console.log(d);
     const expires = 'expires=' + d.toUTCString();
     document.cookie = name + '=' + value + ';' + expires;
