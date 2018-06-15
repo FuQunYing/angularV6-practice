@@ -1,3 +1,75 @@
-<p>
-  bind works!
-</p>
+<nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name">
+  <div nz-row [nzGutter]="40">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nz-row>
+        <nz-form-label nz-col [nzSpan]="9">绑定设备数量</nz-form-label>
+        <nz-form-control nz-col [nzSpan]="15">
+          <input type="number" nz-input [nzSize]="'large'" [(ngModel)]="inputValue" placeholder="请输入数量">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row style="margin-top: 16px;">
+    <div nz-col [nzSpan]="24" style="text-align: center">
+      <button nz-button [nzType]="'primary'" (click)="getDeviceNumber()" style="margin-right: 16px">生成绑定设备数量</button>
+      <button nz-button [nzType]="'primary'" (click)="_query();false" style="margin-right: 16px;"> 绑定</button>
+      <button nz-button (click)="resetForm()">清空</button>
+    </div>
+  </div>
+</nz-card>
+
+<nz-card [nzBordered]="false" [nzHoverable]="true" style="margin-top: 16px;">
+  <form nz-form>
+    <div nz-row [nzGutter]="20" [nzType]="'flex'" [nzJustify]="'space-between'" *ngFor="let item of row; let idx = index">
+      <div nz-col [nzSpan]="1">
+        <nz-form-item nz-row>
+          <nz-form-label nz-col style="text-align: center">{{band_dev_count[idx]+1}}</nz-form-label>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="11">
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSpan]="4">
+            <div [ngSwitch]="state[idx].bindReault">
+              <div *ngSwitchCase="0">
+                <i class="anticon anticon-check-circle-o" style="color: green"></i>绑定成功
+              </div>
+              <div *ngSwitchCase="1">
+                <i class="anticon anticon-exclamation-circle-o" style="color: red;"></i>绑定失败
+              </div>
+              <div *ngSwitchCase="2">
+                <i class="anticon anticon-close-circle-o" style="color: red;"></i>设备已存在
+              </div>
+              <div *ngSwitchDefault>
+                <i class="anticon anticon-clock-circle-o"></i>未绑定
+              </div>
+            </div>
+          </nz-form-label>
+          <nz-form-label nz-col [nzSpan]="3">sn:</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="11">
+            <input type="text" maxlength="13" (blur)="snBlur(idx)" nz-input class="sn">
+          </nz-form-control>
+          <nz-form-control nz-col [nzSpan]="4">
+            <div [ngSwitch]="lengthArr[idx].snLength">
+              <div *ngSwitchCase="0"></div>
+              <div *ngSwitchCase="-1" style="color:#f00;">sn长度有误</div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="11">
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSpan]="3">imei:</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="12">
+            <input type="text" maxlength="15" (blur)="imeiBlur(idx)" nz-input class="imei">
+          </nz-form-control>
+          <nz-form-control nz-col [nzSpan]="4">
+            <div [ngSwitch]="lengthArr[idx].imeiLength">
+              <div *ngSwitchCase="0"></div>
+              <div *ngSwitchCase="-1" style="color: #f00;">imei长度有误</div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</nz-card>

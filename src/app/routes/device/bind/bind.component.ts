@@ -104,7 +104,7 @@ export class BindComponent implements OnInit {
     this.band_dev_count = [];
     this.lengthArr = [];
     this.state = [];
-    for (let i = 0; i < this.inputValue.length; i++) {
+    for (let i = 0; i < this.inputValue; i++) {
       this.row.push({sn: '', imei: ''});
       this.band_dev_count.push(i);
       this.state.push({'rcode': -1});
