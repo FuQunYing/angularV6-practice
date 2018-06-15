@@ -1,14 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {DeviceService} from '../../../service/device.service';
+// import {slideInDownAnimation} from '../../../animations';
+
 
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
   styleUrls: ['./query.component.scss'],
-  providers: [DeviceService]
+  providers: [DeviceService],
+  // animations: [slideInDownAnimation]
 })
+
 export class QueryComponent implements OnInit {
+  /*@HostBinding('@routeAnimation') routeAnimation = true;
+  @HostBinding('style.display') display = 'block';
+  @HostBinding('style.position') position = 'absolute';*/
 
   constructor(private fb: FormBuilder, private deviceService: DeviceService) { }
   // 查询数据
