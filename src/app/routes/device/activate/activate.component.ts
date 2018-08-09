@@ -93,7 +93,7 @@ export class ActivateComponent implements OnInit {
   imeiSearch(body) {
     this.deviceService.imeiSearch(body).then( res => {
       console.log(res);
-      this.imeiSearchData = res.data;
+      this.imeiSearchData = res.result.data;
     //  为请求回来的数据增加状态
       for (let i = 0; i < this.imeiSearchData.length; i++) {
         console.log(this.imeiSearchData[i].sn);
