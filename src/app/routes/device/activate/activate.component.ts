@@ -122,7 +122,91 @@ export class ActivateComponent implements OnInit {
       this.loadingFlag = false;
     });
   }
+
+  // 重新获取未激活设备
+  updateNotActive() {
+    this.search();
+  }
+
+  // 查询snType
+  getSnType() {
+    this.deviceService.getSnType().then(
+      res => {
+        for (let i = 0; i < res.result.length; i++) {
+          this.snArr.push(res.result[i].type);
+        }
+      }
+    );
+  }
+
+  // 批量激活
+  allActivate() {
+    for (let i = 0; i < this.imeiSearchData.length; i ++) {
+      // 根据双向数据绑定，当输入完成的时候，可以更新数组中的sn和type，传入activate挨个激活，所以遍历数组，sn有值的话就去调用激活事件
+      if (this.imeiSearchData[i].sn) {
+        this.activate(this.imeiSearchData[i].imei, this.imeiSearchData[i].sn, this.imeiSearchData[i].type, i);
+      }
+    }
+  }
+  // 设备激活（更新）事件
+  activate(imei, sn, type, i) {
+    const body = {
+      'sn': 'sn' + '',
+      'imei': imei + '',
+      'type': type
+    };
+    this.deviceService.activate(body).then(
+      res => {
+        if (!this.isUpdate) {
+          if (res.result === type ) {
+            this.msg.create('success', '激活成功');
+            this.imeiSearchData[i].isActive = true;
+            // this.search(); // 如果不执行一次查询，拿不到新的状态，但是算上每次调用激活，如果每页最多30条数据，就要发起60次请求
+            // 如果不执行查询，就直接手动更改数据里面activate的值为0
+            this.imeiSearchData[i].activate = 0;
+          } else {
+            this.msg.create('error', '激活失败，' + res.result);
+          }
+        } else {
+          if (res.result === type) {
+            this.msg.create('succes', '更新成功');
+            this.imeiSearchData[i].isActive = true;
+            this.search();
+          } else {
+            this.msg.create('error', '更新失败，' + res.result);
+          }
+        }
+      }
+    );
+  }
+
+  // 滚动用
+  scroll() {
+    function getScrollTop() {
+      let scrollTop = 0;
+      if (document.documentElement && document.documentElement.scrollTop) {
+        scrollTop = document.documentElement.scrollTop;
+      } else if (document.body) {
+        scrollTop = document.body.scrollTop;
+      }
+      return scrollTop;
+    }
+    window.onscroll = () => {
+      if (getScrollTop() > 100) {
+        this.isFixed = 'fixed ant-btn ant-btn-primay ant-btn-lg';
+      } else {
+        this.isFixed = 'nofixed ant-btn ant-btn-primary ant-btn-lg';
+      }
+    };
+  }
   ngOnInit() {
+    this.validateForm = this.fb.group({});
+    for (const i of this.controlArray) {
+      this.validateForm.addControl(i.control, new FormControl());
+      this.search();
+      this.getSnType();
+      this.scroll();
+    }
   }
 
 }
