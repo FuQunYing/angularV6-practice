@@ -1,6 +1,8 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {DeviceService} from '../../../service/device.service';
+import { NzMessageService} from 'ng-zorro-antd';
+
 // import {slideInDownAnimation} from '../../../animations';
 
 
@@ -17,7 +19,9 @@ export class QueryComponent implements OnInit {
   @HostBinding('style.display') display = 'block';
   @HostBinding('style.position') position = 'absolute';*/
 
-  constructor(private fb: FormBuilder, private deviceService: DeviceService) { }
+  constructor(private fb: FormBuilder,
+              private deviceService: DeviceService,
+              private msg: NzMessageService) { }
   // 查询数据
   public devInfoData = [];
   // 查询结果展示标识
@@ -41,6 +45,19 @@ export class QueryComponent implements OnInit {
     {name: 'CCID', control: 'ccid'}
   ];
 
+  isSimShow = false;
+  simData: any = {
+    'iccid': '',
+    'msisdn': '',
+    'pkgName': '',
+    'usedFlow': '',
+    'userStatus': ''
+  };
+  simDataLoad: Boolean;
+  isSimUpdateShow = false;
+  updateLoad: Boolean;
+  curCcid: any;
+  curStatus: any;
   ngOnInit() {
     this.init();
   }
@@ -134,5 +151,45 @@ export class QueryComponent implements OnInit {
       // 关闭加载显示
       this.loadingFlag = false;
     });
+  }
+
+  // sim卡信息查询
+  getSim(ccid) {
+    this.isSimShow = true;
+    this.simDataLoad = true;
+    this.deviceService.getSimCard(ccid).subscribe( res => {
+      // console.log(res);
+      if (res.rcode === 0) {
+        this.simDataLoad = false;
+        this.simData = res.result;
+        this.curStatus = res.result.userStatus;
+      }
+    });
+  }
+
+  // sim卡状态更新
+  updateSim() {
+    this.updateLoad = true;
+    this.deviceService.updateSimCard(this.curCcid, Number(this.curStatus)).subscribe( res => {
+      // console.log(res);
+      if (res.rcode === 0) {
+        this.updateLoad = false;
+        this.msg.create('success', '卡状态已更改');
+        this.isSimUpdateShow = false;
+        this.getSim(this.curCcid);
+      }
+    });
+  }
+  handleClose() {
+    this.isSimShow = false;
+  }
+  handleCancel() {
+    this.isSimUpdateShow = false;
+  }
+  openUpdate(ccid) {
+    this.isSimShow = false;
+    this.isSimUpdateShow = true;
+    this.curCcid = ccid;
+    // console.log(this.curCcid, this.curStatus);
   }
 }

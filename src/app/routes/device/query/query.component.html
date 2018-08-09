@@ -38,7 +38,10 @@
           <td>{{data.sn}}</td>
           <td>{{data.imei}}</td>
           <td>{{data.mcode}}</td>
-          <td>{{data.ccid}}</td>
+          <td>
+            {{data.ccid}}
+            <button *ngIf="data.ccid" nz-button [nzType]="'primary'" [nzSize]="'small'" nzGhost (click)="getSim(data.ccid)">详情</button>
+          </td>
           <td>{{data.activate === -1?'已激活（老设备）':(data.activate===0?'已激活':(data.activate===1?'未激活':data.activate===2?'停用设备':''))}}</td>
           <td>{{data.type}}</td>
           <td>{{data.change_time}}</td>
@@ -50,6 +53,66 @@
     </div>
   </div>
 </nz-card>
+
+<!--SIM卡信息展示-->
+<nz-modal [nzVisible]="isSimShow" [nzTitle]="'CCID详细信息'" [nzContent]="simContent" [nzFooter]="simFooter" (nzOnCancel)="handleClose()">
+  <ng-template #simContent>
+    <div *ngIf="!simDataLoad">
+      <div nz-row>
+        <span nz-col [nzSpan]="4">CCID: </span>
+        <strong nz-col [nzSpan]="18">{{simData.iccid}}</strong>
+      </div>
+      <div nz-row>
+        <span nz-col [nzSpan]="4">卡号: </span>
+        <strong nz-col [nzSpan]="18">{{simData.msisdn}}</strong>
+      </div>
+      <div nz-row>
+        <span nz-col [nzSpan]="4">卡套餐: </span>
+        <strong nz-col [nzSpan]="18">{{simData.pkgName}}</strong>
+      </div>
+      <div nz-row>
+        <span nz-col [nzSpan]="4">已用流量: </span>
+        <strong nz-col [nzSpan]="18">{{simData.usedFlow}} MB</strong>
+      </div>
+      <div nz-row>
+        <span nz-col [nzSpan]="4">卡状态: </span>
+        <strong nz-col [nzSpan]="18" class="{{simData.userStatus === '7' ? 'red': ''}}">
+          {{simData.userStatus?
+          (simData.userStatus === '3'?'待激活':
+          (simData.userStatus === '4'?'正常':
+          (simData.userStatus === '7'?'停用': ''))): ''}}
+        </strong>
+      </div>
+    </div>
+    <nz-spin [nzTip]="'正在读取数据...'" *ngIf="simDataLoad">
+      <div style="width: 100%; height: 100px;"></div>
+    </nz-spin>
+  </ng-template>
+  <ng-template #simFooter>
+    <button nz-button [nzType]="'default'" (click)="handleClose()">关闭</button>
+    <button nz-button [nzType]="'primary'" (click)="openUpdate(simData.iccid)">更新卡状态</button>
+  </ng-template>
+</nz-modal>
+
+<!--SIM卡状态更新-->
+<nz-modal [nzVisible]="isSimUpdateShow" [nzTitle]="'更新卡状态'" [nzContent]="updateContent" [nzFooter]="updateFooter" (nzOnCancel)="handleCancel()">
+  <ng-template #updateContent>
+    <div *ngIf="!updateLoad">
+      <h3 style="font-size:15px;margin-bottom: 10px">请选择状态：</h3>
+      <nz-radio-group [(ngModel)] = "curStatus">
+        <label nz-radio-button nzValue = "4">正常</label>
+        <label nz-radio-button nzValue = "7">停机</label>
+      </nz-radio-group>
+    </div>
+    <nz-spin [nzTip]="'正在读取数据...'" *ngIf="updateLoad">
+      <div style="width: 100%; height: 100px;"></div>
+    </nz-spin>
+  </ng-template>
+  <ng-template #updateFooter>
+    <button nz-button [nzType]="'default'" (click)="handleCancel()">取消</button>
+    <button nz-button [nzType]="'primary'" (click)="updateSim()">确认更新</button>
+  </ng-template>
+</nz-modal>
 
 <nz-spin [nzTip]="'正在读取数据...'" *ngIf="loadingFlag" [nzSize]="'large'">
   <div style="width:100%;height:100%"></div>

@@ -3,6 +3,7 @@ import 'rxjs/add/operator/toPromise';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {CookieService} from './cookie.service';
+import { Observable} from 'rxjs/Observable';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,35 @@ export class DeviceService {
       .toPromise()
       .catch(this.handlerError);
   }
+
+  /**
+   * 获取sim卡信息
+   * @param {string} iccid
+   * @returns {Observable<any>}
+   */
+  public getSimCard( iccid: string): Observable<any> {
+    const uri = `/api/v1/device/simcard/get`;
+    const body = {
+      'iccid': iccid
+    };
+    return this.http.post(uri, JSON.stringify(body), {headers: this.headers});
+  }
+
+  /**
+   * 更新Sim卡状态
+   * @param {string} iccid
+   * @param {number} status
+   * @returns {Observable<any>}
+   */
+  public updateSimCard( iccid: string, status: number): Observable<any> {
+    const uri = `/api/v1/device/simcard/update`;
+    const body = {
+      'iccid': iccid,
+      'status': status
+    };
+    return this.http.post(uri, JSON.stringify(body), {headers: this.headers});
+  }
+
 //  错误处理
   private handlerError(error: any): Promise<any> {
     console.log('发生错误', error);
