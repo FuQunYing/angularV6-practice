@@ -1,3 +1,67 @@
-<p>
-  speed works!
-</p>
+<nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name">
+  <label>
+    <span>是否为生产环境</span>
+    <nz-switch [ngModel]="envFlag" [nzCheckedChildren]="checked" [nzUnCheckedChildren]="unChecked" style="margin-left: 8px;"></nz-switch>
+    <ng-template #checked><i class="anticon anticon-check"></i></ng-template>
+    <ng-template #unChecked><i class="anticon anticon-cross"></i></ng-template>
+  </label>
+  <form nz-form [formGroup]="validateForm" style="margin-top: 16px;">
+    <div nz-row [nzGutter]="40">
+      <div nz-col [nzSpan]="8" *ngFor="let control of controlArray">
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSpan]="5" [nzFor]="control.ctl">{{control.name}}</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="19">
+            <input nz-input [placeholder]="control.name" [formControlName]="control.ctl" [attr.id]="control.ctl">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" style="text-align: center">
+        <button nz-button [nzType]="'primary'" (click)="_query()" type="button">搜索</button>
+      </div>
+    </div>
+  </form>
+</nz-card>
+
+<nz-card [nzBordered]="false" [nzHoverable]="true" style="margin-top: 16px;" *ngIf="showFlag">
+  <nz-table #nzTable [nzData]="snInfoData" [nzPageSize]="10">
+    <thead>
+      <tr>
+        <th>SN</th>
+        <th>IMEI</th>
+        <th>MCODE</th>
+        <th>coin_delay</th>
+        <th>charge_delay</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let data of nzTable.data">
+      <tr>
+        <td>{{data.sn}}</td>
+        <td>{{data.imei}}</td>
+        <td>{{data.mcode}}</td>
+        <td>
+          <div *ngIf="!enterEditFlag">{{data.coin_delay}}</div>
+          <div *ngIf="enterEditFlag">
+            <input nz-input [(ngModel)]="coin_delayValue">
+          </div>
+        </td>
+        <td>
+          <div *ngIf="!enterEditFlag">{{data.charge_delay}}</div>
+          <div *ngIf="enterEditFlag">
+            <input nz-input [(ngModel)]="charge_delayValue">
+          </div>
+        </td>
+        <td>
+          <button nz-button [nzType]="'primary'" (click)="enterEdit()" *ngIf="!enterEditFlag">更改延时</button>
+          <button nz-button [nzType]="'primary'" (click)="change()" *ngIf="enterEditFlag">确定</button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<nz-spin [nzTip]="'正在读取数据...'" *ngIf="loadingFlag">
+  <div style="width: 100%;height: 100%"></div>
+</nz-spin>
