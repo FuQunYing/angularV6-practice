@@ -49,7 +49,7 @@ export class DeviceService {
    * @returns {Promise<any>}
    */
   public imeiSearch(body): Promise<any> {
-    const uri = '/api/v1/device/searchImei';
+    const uri = '/api/v1/device/searchIMEI';
     return this.http.post(uri, body, {headers: this.headers})
       .toPromise()
       .catch(this.handlerError);
