@@ -21,7 +21,7 @@
 
 <nz-card [nzBordered]="false" [nzHoverable]="true" style="margin-top:16px;" *ngIf="showSearchFlag">
   <div style="margin-top:16px;">
-    <nz-table #nzTable [nzData]="devInfoData" [nzPageSize]="10" [nzShowPagination]="false" [nzLoading]="tloading">
+    <nz-table class="query-table" #nzTable [nzData]="devInfoData" [nzPageSize]="10" [nzShowPagination]="false" [nzLoading]="tloading">
       <thead>
         <tr>
           <th>SN</th>

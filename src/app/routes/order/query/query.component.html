@@ -37,19 +37,19 @@
 
 <!-- 展示列表 -->
 <nz-card [nzBordered]="false" [nzHoverable]="true" style="margin-top: 16px;" *ngIf="showBoxFlag">
-      <nz-table #nzTable [nzData]='orderinfoData' [nzPageSize]="20" [nzLoading]='tableLoadingFlag' [nzShowPagination]="false">
+      <nz-table class="query-table" #nzTable [nzData]='orderinfoData' [nzPageSize]="20" [nzLoading]='tableLoadingFlag' [nzShowPagination]="false">
         <thead>
-        <tr>
-          <th><span>单号</span></th>
-          <th><span>订单类型</span></th>
-          <th><span>卡号</span></th>
-          <th><span>SN</span></th>
-          <th><span>客户端</span></th>
-          <th><span>DEV_MCODE</span></th>
-          <th  style="text-align: center;">支付<span>(元)</span></th>
-          <th  style="text-align: center;">找零<span>(元)</span></th>
-          <th  style="text-align: center;">卡余额<span>(元)</span></th>
-          <th><span>时间</span></th>
+        <tr style="text-align: center">
+          <th>单号</th>
+          <th>订单类型</th>
+          <th>卡号</th>
+          <th>SN</th>
+          <th>客户端</th>
+          <th>DEV_MCODE</th>
+          <th>支付(元)</th>
+          <th>找零(元)</th>
+          <th>卡余额(元)</th>
+          <th>时间</th>
         </tr>
         </thead>
         <tbody>

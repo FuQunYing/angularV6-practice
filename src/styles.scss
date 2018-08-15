@@ -28,3 +28,21 @@ body{
 .pt-lg {
   padding-top: 24px!important;
 }
+
+.query-table {
+  tr{
+    th{
+      text-align: center;
+    }
+    td{
+      text-align: center;
+    }
+  }
+}
+
+::ng-deep .ant-card-body{
+  padding: 15px!important;
+}
+::ng-deep .ant-table{
+  font-size: 12px!important;
+}
