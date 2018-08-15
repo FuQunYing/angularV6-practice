@@ -1,3 +1,31 @@
-<p>
-  recharge works!
-</p>
+<nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name">
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row [nzGutter]="40">
+        <div nz-col [nzSpan]="8">
+          <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSpan]="6">卡号</nz-form-label>
+            <nz-form-control nz-col [nzSpan]="18">
+              <input nz-input [placeholder]="'卡号'" [formControlName]="'cardno'" [id]="'cardno'">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item z-row>
+            <nz-form-label nz-col [nzSpan]="6">充值金额</nz-form-label>
+            <nz-form-control z-col [nzSpan]="18">
+              <nz-input-group [nzAddOnAfter]="addOnAfter">
+                <input nz-input [placeholder]="'充值金额'" [formControlName]="'variable'" [id]="'variable'">
+                <ng-template #addOnAfter>元</ng-template>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="text-align: center;">
+          <button nz-button [nzType]="'primary'" (click)="_query();false" type="button" [nzLoading]='loadingFlag'>充值</button>
+          <button nz-button (click)="resetForm()" style="margin-left: 10px">清空</button>
+        </div>
+      </div>
+    </form>
+</nz-card>
