@@ -5,7 +5,7 @@
           <nz-form-item nz-row>
             <nz-form-label nz-col [nzSpan]="5" [attr.for]="control.control">{{control.name}}</nz-form-label>
             <nz-form-control nz-col [nzSpan]="19">
-              <input nz-input [nzSize]="'large'" [placeholder]="control.placeholder" [formControlName]="control.control" [id]="control.control">
+              <input nz-input [placeholder]="control.placeholder" [formControlName]="control.control" [id]="control.control">
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -13,7 +13,7 @@
       <div nz-row [nzType]="'flex'" [nzJustify]="'center'">
         <div nz-col [nzSpan]="10" class="searchbtn-group">
           <button nz-button [nzType]="'primary'" (click)="search();false" type="button">搜索</button>
-          <!--<button nz-button [nzType]="'primary'" (click)="allActivate();false" type="button" [class]="isFixed" [nzSize]="'large'"> 批量激活</button>-->
+          <!--<button nz-button [nzType]="'primary'" (click)="allActivate();false" type="button" [class]="isFixed"> 批量激活</button>-->
           <button nz-button (click)="updateNotActive();false" type="button">重新获取未激活设备</button>
           <button nz-button (click)="delUnActive()" [nzType]="'danger'">删除未激活设备</button>
         </div>
@@ -56,16 +56,12 @@
             </div>
           </td>
           <td >
-            <nz-select  [nzSize]="'large'" [nzPlaceHolder]="'请选择'" style="width:80px;" [(ngModel)]="data.type">
+            <nz-select  [nzPlaceHolder]="'请选择'" style="width:80px;" [(ngModel)]="data.type">
               <nz-option *ngFor="let type of snArr" [nzLabel]="type" [nzValue]="type" ></nz-option>
             </nz-select>
           </td>
-          <td >
-            {{data.create_time}}
-          </td>
-          <td >
-            {{data.change_time}}
-          </td>
+          <td >{{data.create_time}}</td>
+          <td >{{data.change_time}}</td>
           <td >
             <div [ngSwitch]="data.activate">
               <div *ngSwitchCase="-1">

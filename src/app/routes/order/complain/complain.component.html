@@ -1,3 +1,68 @@
-<p>
-  complain works!
-</p>
+<nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name">
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row [nzGutter]="40">
+        <div nz-col [nzSpan]="8" *ngFor="let control of controlArray">
+          <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSpan]="5">{{control.name}}</nz-form-label>
+            <nz-form-control nz-col [nzSpan]="19">
+              <input nz-input [placeholder]="control.name" [formControlName]="control.contorl" [id]="control.contorl">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="text-align: center;">
+          <button nz-button [nzType]="'primary'" (click)="_query();false" type="button">搜索</button>
+          <button nz-button (click)="resetForm()" style="margin-left: 10px;">清空</button>
+        </div>
+      </div>
+    </form>
+</nz-card>
+
+<nz-card [nzBordered]="false" [nzHoverable]="true" *ngIf="showBoxFlag" style="margin-top: 16px;">
+    <!-- 展示数据 -->
+    <div style="margin-top: 16px;">
+      <nz-table class="query-table" #nzTable [nzData]="orderInfoData" [nzPageSize]="10">
+        <thead>
+        <tr>
+          <th>投诉单号</th>
+          <th>涉及单号</th>
+          <th>投诉状态</th>
+          <th>MCODE</th>
+          <th>SN</th>
+          <th>cardno</th>
+          <th>客户端</th>
+          <th>投诉时余额</th>
+          <th>投诉金额</th>
+          <th>电话</th>
+          <th>原因大类</th>
+          <th>详细原因</th>
+          <th>创建时间</th>
+          <th>处理时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor=" let data of nzTable.data ">
+          <td>{{data.ordernum}}</td>
+          <td>{{data.aboutnum}}</td>
+          <td>{{data.order_status}}</td>
+          <td>{{data.mcode}}</td>
+          <td>{{data.sn}}</td>
+          <td>{{data.cardno}}</td>
+          <td>{{data.client}}</td>
+          <td>{{data.amount}}</td>
+          <td>{{data.card_balance}}</td>
+          <td>{{data.telephone}}</td>
+          <td>{{data.reason}}</td>
+          <td>{{data.otherinfo}}</td>
+          <td>{{data.create_time}}</td>
+          <td>{{data.deal_time}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+</nz-card>
+
+<nz-spin [nzTip]=" '正在读取数据...' " *ngIf="loadingFlag ">
+  <div style="width: 100%; height: 100px; "></div>
+</nz-spin>
