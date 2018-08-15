@@ -19,7 +19,7 @@ export class AuthGuardService implements CanActivate {
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const url: string = state.url;
-    console.log(url); // TODO：为什么有的先输出了一次login又输出了一次device/query
+    // console.log(url); // TODO：为什么有的先输出了一次login又输出了一次device/query
     if (url === '/login') {
       return true;
     }

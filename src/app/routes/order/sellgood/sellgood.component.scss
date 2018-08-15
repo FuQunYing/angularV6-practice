@@ -1,0 +1,39 @@
+::ng-deep .ant-calendar-picker{
+  width: 100%;
+}
+.range-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    margin: 0 5px;
+  }
+}
+@media screen and (min-width: 375px) {
+  .btn-list-item {
+    margin-top: 8px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .btn-list-item {
+    margin: 1px;
+  }
+}
+.t-ellipsis {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.weixin-pay {
+  color: #09bb07;
+}
+
+.alipay-pay {
+  color: #1296db
+}
+.sellgood-thead tr th{
+  text-align: center;
+}
