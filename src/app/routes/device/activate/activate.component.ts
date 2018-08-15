@@ -254,7 +254,7 @@ export class ActivateComponent implements OnInit {
     this.validateForm = this.fb.group({});
     for (const i of this.controlArray) {
       this.validateForm.addControl(i.control, new FormControl());
-      this.search();
+      // this.search();
       this.getSnType();
       // this.scroll();
     }
