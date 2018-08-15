@@ -106,6 +106,28 @@ export class DeviceService {
     return this.http.post(uri, JSON.stringify(body), {headers: this.headers});
   }
 
+  /**
+   * 删除未激活的设备
+   * @param {Array<any>} imei
+   * @returns {Observable<any>}
+   */
+  public delUnActive(imei: Array<any>): Observable<any> {
+    const uri = `/api/v1/device/delUnAcitvate`;
+    const body = {
+      'imei': imei
+    };
+    return this.http.post(uri, JSON.stringify(body), {headers: this.headers});
+  }
+
+  /**
+   * 更新绑定设备信息
+   * @param body
+   * @returns {Observable<any>}
+   */
+  public updateDevice(body: any): Observable<any> {
+    const uri = `/api/v1/device/update`;
+    return this.http.post(uri, JSON.stringify(body), {headers: this.headers});
+  }
 //  错误处理
   private handlerError(error: any): Promise<any> {
     console.log('发生错误', error);

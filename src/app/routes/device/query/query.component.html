@@ -30,7 +30,11 @@
           <th>CCID</th>
           <th>激活状态</th>
           <th>激活类型</th>
+          <th>版本</th>
+          <th>设备状态</th>
           <th>修改时间</th>
+          <th>激活时间</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody *ngFor="let data of nzTable.data">
@@ -44,7 +48,20 @@
           </td>
           <td>{{data.activate === -1?'已激活（老设备）':(data.activate===0?'已激活':(data.activate===1?'未激活':data.activate===2?'停用设备':''))}}</td>
           <td>{{data.type}}</td>
+          <td>{{data.mv}}</td>
+          <td>
+            {{data.status?
+            (data.status === ''?'':
+            (data.status === '0'?'0 正常在线':
+            (data.status === '1'?'1 设备离线':
+            (data.status === '3'?'3 故障(可能正在找零，没有故障，稍候再试)':
+            (data.status === '5'?'5 设备与主机通讯故障': data.status + ' 设备与主机通讯失败'))))):''}}
+          </td>
           <td>{{data.change_time}}</td>
+          <td>{{data.activate_time}}</td>
+          <td>
+            <button nz-button [nzType]="'primary'" [nzSize]="'small'" *ngIf="data.mcode" (click)="updateDevice(data.mcode,data.sn, data.imei,data.ccid, data.activate, data.type, data.activate_time)">更新设备信息</button>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -53,6 +70,46 @@
     </div>
   </div>
 </nz-card>
+
+<!--更新设备信息-->
+<nz-modal [nzVisible]="updateModal" [nzTitle]="'更新设备信息'" (nzOnCancel)="updateClose()" [nzFooter]="null">
+    <form nz-form [formGroup]="validateForm1" (ngSubmit)="submitForm()">
+      <div nz-row>
+        <div nz-col [nzSpan]="24" *ngFor="let ctl of deviceUpdateArray">
+          <nz-form-item  nz-row>
+            <nz-form-label  nz-col [nzSpan]="5">
+              <label [attr.for]="ctl.ctl" [class]="ctl.required ? 'xing': ''">{{ctl.name}}</label>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="17">
+              <input class="disabled" nz-input [formControlName]="ctl.ctl" *ngIf="ctl.type === 'minput'" [id]="ctl.ctl" [value]="upmcode" disabled [(ngModel)]="upmcode">
+              <input nz-input [formControlName]="ctl.ctl" *ngIf="ctl.type === 'sinput'" [id]="ctl.ctl" [placeholder]="ctl.name" [value]="upsn" [(ngModel)]="upsn">
+              <input nz-input [formControlName]="ctl.ctl" *ngIf="ctl.type === 'iinput'" [id]="ctl.ctl" [placeholder]="ctl.name" [value]="upimei" [(ngModel)]="upimei">
+              <input nz-input [formControlName]="ctl.ctl" *ngIf="ctl.type === 'cinput'" [id]="ctl.ctl" [placeholder]="ctl.name" [value]="upccid" [(ngModel)]="upccid">
+              <input nz-input [formControlName]="ctl.ctl" *ngIf="ctl.type === 'tinput'" [id]="ctl.ctl" [placeholder]="ctl.name" [value]="acttime" [(ngModel)]="acttime">
+              <nz-select [formControlName]="ctl.ctl" *ngIf="ctl.type === 'sselect'" [nzPlaceHolder]="ctl.name" [id]="ctl.ctl" [(ngModel)]="upstatus">
+                <nz-option [nzValue]="0" [nzLabel]="'激活'"></nz-option>
+                <nz-option [nzValue]="1" [nzLabel]="'不激活'"></nz-option>
+              </nz-select>
+              <nz-select [formControlName]="ctl.ctl" *ngIf="ctl.type === 'tselect'" [nzPlaceHolder]="ctl.name" [id]="ctl.ctl" [(ngModel)]="uptype">
+                <nz-option *ngFor="let type of typeArr" [nzLabel]="type" [nzValue]="type"></nz-option>
+              </nz-select>
+              <ng-container *ngIf="validateForm1.get(ctl.ctl)">
+                <nz-form-explain *ngIf="ctl.required && validateForm1.get(ctl.ctl).dirty && validateForm1.get(ctl.ctl).errors">**此项必填</nz-form-explain>
+              </ng-container>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="5" style="text-align: right">
+          <button nz-button [nzType]="'default'" (click)="updateClose()">取消</button>
+        </div>
+        <div nz-col [nzSpan]="17" style="text-align: right">
+          <button nz-button [nzType]="'primary'" (click)="confirmUpdate()" [disabled]="!validateForm1.valid">确定更新</button>
+        </div>
+      </div>
+    </form>
+</nz-modal>
 
 <!--SIM卡信息展示-->
 <nz-modal [nzVisible]="isSimShow" [nzTitle]="'CCID详细信息'" [nzContent]="simContent" [nzFooter]="simFooter" (nzOnCancel)="handleClose()">

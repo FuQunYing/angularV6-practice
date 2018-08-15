@@ -1,3 +1,98 @@
-<p>
-  activate works!
-</p>
+<nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name">
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row [nzGutter]="40">
+        <div nz-col [nzSpan]="8" *ngFor="let control of controlArray">
+          <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSpan]="5">
+              <label [attr.for]="control.control">{{control.name}}</label>
+            </nz-form-label>
+            <nz-form-control nz-col [nzSpan]="19">
+              <input nz-input [nzSize]="'large'" [placeholder]="control.placeholder" [formControlName]="control.control" [id]="control.control">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzType]="'flex'" [nzJustify]="'center'">
+        <div nz-col [nzSpan]="10" class="searchbtn-group">
+          <button nz-button [nzType]="'primary'" (click)="search();false" type="button">搜索</button>
+          <!--<button nz-button [nzType]="'primary'" (click)="allActivate();false" type="button" [class]="isFixed" [nzSize]="'large'"> 批量激活</button>-->
+          <button nz-button (click)="updateNotActive();false" type="button">重新获取未激活设备</button>
+          <button nz-button (click)="delUnActive()" [nzType]="'danger'">删除未激活设备</button>
+        </div>
+      </div>
+    </form>
+</nz-card>
+
+<nz-card [nzBordered]="false" [nzHoverable]="true"  style="margin-top: 16px;">
+    <!-- 展示列表 -->
+    <div style="margin-top: 16px;" *ngIf="showBoxFlag">
+      <nz-table #nzTable [nzData]="imeiSearchData" [nzPageSize]="30" style="margin-top: 16px;" [nzShowPagination]='true'>
+        <thead class="center">
+        <tr>
+          <th>
+            <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()">全选</label>
+          </th>
+          <th>序号</th>
+          <th>IMEI</th>
+          <th>SN</th>
+          <th>设备类型</th>
+          <th>设备创建时间</th>
+          <th>更改时间</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody class="center">
+        <tr *ngFor="let data of nzTable.data;let idx=index">
+          <td>
+            <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="updateSingleChecked(idx)"></label>
+          </td>
+          <td  style="text-align: center;">
+            {{idx+1}}
+          </td>
+          <td >{{data.imei}}</td>
+          <td >
+            <div nz-col [nzSpan]="20" [nzOffset]="'2'" class="center">
+              <input nz-input *ngIf="!isUpdate" [(ngModel)]="data.sn">
+              <span *ngIf="isUpdate">{{data.sn}}</span>
+            </div>
+          </td>
+          <td >
+            <nz-select  [nzSize]="'large'" [nzPlaceHolder]="'请选择'" style="width:80px;" [(ngModel)]="data.type">
+              <nz-option *ngFor="let type of snArr" [nzLabel]="type" [nzValue]="type" ></nz-option>
+            </nz-select>
+          </td>
+          <td >
+            {{data.create_time}}
+          </td>
+          <td >
+            {{data.change_time}}
+          </td>
+          <td >
+            <div [ngSwitch]="data.activate">
+              <div *ngSwitchCase="-1">
+                <i class="anticon anticon-clock-circle-o"></i>已激活（老设备）
+              </div>
+              <div *ngSwitchCase="0">
+                <i class="anticon anticon-check-circle-o" style="color: green"></i>已激活
+              </div>
+              <div *ngSwitchCase="1">
+                <i class="anticon anticon-close-circle-o" style="color: red"></i>未激活
+              </div>
+              <div *ngSwitchCase="2">
+                <i class="anticon anticon-close-circle-o" style="color: skyblue"></i>停用设备
+              </div>
+            </div>
+          </td>
+          <td >
+            <button *ngIf="!isUpdate" nz-button [nzType]="'primary'" [nz-tooltip]="'点击激活设备'" (click)="activate(data.imei, data.sn, data.type, idx)" [disabled]="data.isActive">{{data.isActive === true ? '已激活': '激活'}}</button>
+            <button *ngIf="isUpdate" nz-button [nzType]="'primary'" [nz-tooltip]="'点击更新设备类型'" (click)="activate(data.imei, data.sn, data.type)">更新</button>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <nz-spin [nzTip]="'正在读取数据...'" *ngIf="loadingFlag">
+      <div style="width: 100%; height: 100px;"></div>
+    </nz-spin>
+</nz-card>

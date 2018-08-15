@@ -1,9 +1,8 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators, ValidationErrors} from '@angular/forms';
 import {DeviceService} from '../../../service/device.service';
-import { NzMessageService} from 'ng-zorro-antd';
+import { NzMessageService, NzModalService} from 'ng-zorro-antd';
 
-// import {slideInDownAnimation} from '../../../animations';
 
 
 @Component({
@@ -11,17 +10,15 @@ import { NzMessageService} from 'ng-zorro-antd';
   templateUrl: './query.component.html',
   styleUrls: ['./query.component.scss'],
   providers: [DeviceService],
-  // animations: [slideInDownAnimation]
 })
 
 export class QueryComponent implements OnInit {
-  /*@HostBinding('@routeAnimation') routeAnimation = true;
-  @HostBinding('style.display') display = 'block';
-  @HostBinding('style.position') position = 'absolute';*/
+
 
   constructor(private fb: FormBuilder,
               private deviceService: DeviceService,
-              private msg: NzMessageService) { }
+              private msg: NzMessageService,
+              private modal: NzModalService) { }
   // 查询数据
   public devInfoData = [];
   // 查询结果展示标识
@@ -38,13 +35,32 @@ export class QueryComponent implements OnInit {
   public tloading: Boolean;
   name = '设备查询';
   validateForm: FormGroup;
+  validateForm1: FormGroup;
   controlArray = [
     {name: 'SN', control: 'sn'},
     {name: 'IMEI', control: 'imei'},
     {name: 'MCODE', control: 'mcode'},
     {name: 'CCID', control: 'ccid'}
   ];
-
+  // 保存设备类型
+  typeArr: Array<any> = [];
+  upmcode: String;
+  upsn: String;
+  upimei: String;
+  upccid: String;
+  upstatus: String;
+  uptype: String;
+  acttime: String;
+  updateModal = false;
+  deviceUpdateArray = [
+    { name: 'MCODE', ctl: 'updatemcode', type: 'minput', required: false, value: this.upmcode },
+    { name: 'SN', ctl: 'updatesn', type: 'sinput', required: true, value: this.upsn },
+    { name: 'IMEI', ctl: 'updateimei', type: 'iinput', required: true, value: this.upimei },
+    { name: 'CCID', ctl: 'updateccid', type: 'cinput', required: true, value: this.upccid },
+    { name: '激活状态', ctl: 'updatestatus', type: 'sselect', required: true, value: this.upstatus },
+    { name: '设备类型', ctl: 'updatetype', type: 'tselect', required: true, value: this.uptype },
+    { name: '激活时间', ctl: 'activetime', type: 'tinput', required: false , value: this.acttime},
+  ];
   isSimShow = false;
   simData: any = {
     'iccid': '',
@@ -76,6 +92,16 @@ export class QueryComponent implements OnInit {
     for (const i of this.controlArray) {
       this.validateForm.addControl(i.control, new FormControl());
     }
+    this.validateForm1 = this.fb.group({
+      updatesn: [null, [Validators.required]],
+      updateimei: [null, [Validators.required]],
+      updatemcode: [null],
+      updateccid: [null, [Validators.required]],
+      updatestatus: [null, [Validators.required]],
+      updatetype: [null, [Validators.required]],
+      activetime: [null]
+    });
+    this.getSnTypes();
   }
   /**
    * 重置表单
@@ -191,5 +217,81 @@ export class QueryComponent implements OnInit {
     this.isSimUpdateShow = true;
     this.curCcid = ccid;
     // console.log(this.curCcid, this.curStatus);
+  }
+
+  // device update 更新设备信息
+  updateDevice(mcode, sn, imei, ccid, activate, type, time) {
+    // this.validateForm1.reset();
+    this.validateForm1.value.updatemcode = mcode ? mcode : '';
+    this.validateForm1.value.updatesn = sn ? sn : '';
+    this.validateForm1.value.updateimei = imei ? imei : '';
+    this.validateForm1.value.updateccid = ccid ? ccid : '';
+    this.validateForm1.value.updatestatus = activate ? activate : 0;
+    this.validateForm1.value.updatetype = type ? type : this.typeArr[0] ;
+    this.validateForm1.value.activetime = time ? time : '';
+    this.upmcode = mcode;
+    this.upsn = sn;
+    this.upimei = imei;
+    this.upccid = ccid;
+    this.upstatus = activate;
+    this.uptype = type;
+    this.acttime = time;
+    // console.log(this.validateForm1.value);
+    this.updateModal = true;
+  }
+  confirmUpdate() {
+    this.updateModal = false;
+    // console.log(this.validateForm1.value);
+    const body = {
+      'mcode': this.upmcode,
+      'updateInfo': {
+        'sn': this.validateForm1.value.updatesn + '',
+        'imei': this.validateForm1.value.updateimei + '',
+        'ccid': this.validateForm1.value.updateccid + '',
+        'activate': this.validateForm1.value.updatestatus,
+        'type': this.validateForm1.value.updatetype,
+        'activate_time': this.validateForm1.value.activetime
+      }
+    };
+    // console.log(body);
+    this.modal.confirm({
+      nzTitle: '确认更新当前设备信息吗？',
+      nzOnOk: () => {
+        this.deviceService.updateDevice(body).subscribe( res => {
+          console.log(res);
+          if (res.rcode === 0) {
+            this.msg.create('success', '更新成功');
+            this._query();
+          }
+        });
+      },
+      nzOnCancel: () => {
+        this.msg.create('info',  '取消更新');
+        this.updateModal = false;
+      }
+    });
+  }
+  updateClose() {
+    this.msg.create('info', '取消更新');
+    this.updateModal = false;
+  }
+
+  // 查询snType
+  getSnTypes() {
+    this.deviceService.getSnType().then(
+      res => {
+        for (let i = 0; i < res.result.length; i++) {
+          this.typeArr.push( res.result[i].type);
+        }
+      }
+    );
+  }
+  submitForm(): void {
+    for (const i in this.validateForm1.controls) {
+      if (this.validateForm1.controls[i]) {
+        this.validateForm1.controls[i].markAsDirty();
+        this.validateForm1.controls[i].updateValueAndValidity();
+      }
+    }
   }
 }

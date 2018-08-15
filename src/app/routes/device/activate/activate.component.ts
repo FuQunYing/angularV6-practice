@@ -30,6 +30,8 @@ export class ActivateComponent implements OnInit {
     { name: 'IMEI', control: 'imei', placeholder: 'IMEI'},
     { name: 'SN', control: 'sn', placeholder: 'SN（只能查询已激活设备的sn号）'}
   ];
+  allChecked = false;
+  selectedImei: Array<any> = [];
 
   // 重置表单
   resetForm() {
@@ -123,6 +125,22 @@ export class ActivateComponent implements OnInit {
     });
   }
 
+  // 全选事件
+  updateAllChecked() {
+    for (let i = 0; i < 30; i++) {
+      this.imeiSearchData[i].checked = this.allChecked;
+    }
+  }
+  // 单选事件(不用也行)
+  updateSingleChecked(i) {
+    if (i <= 30) {
+      if (this.imeiSearchData.every(item => item.checked === false)) {
+        this.allChecked = false;
+      } else if (this.imeiSearchData.every(item => item.checked === true)) {
+        this.allChecked = true;
+      }
+    }
+  }
   // 重新获取未激活设备
   updateNotActive() {
     this.search();
@@ -139,6 +157,39 @@ export class ActivateComponent implements OnInit {
     );
   }
 
+  // 删除未激活应用
+  delUnActive() {
+    const imei = [];
+    for (let i = 0; i < this.imeiSearchData.length; i++) {
+      if (this.imeiSearchData[i].checked) {
+        imei.push(this.imeiSearchData[i].imei + '');
+      }
+    }
+    if (imei) {
+      console.log(imei);
+      this.deviceService.delUnActive(imei).subscribe( res => {
+        if (res.rcode === 0) {
+          this.msg.create('success', '删除成功');
+          this.search();
+        } else {
+          this.msg.create('error', '删除失败');
+        }
+      });
+    } else {
+      this.msg.create('warning', '当前未选择任何设备');
+    }
+  }
+  // 查询snType
+  getSnTypes() {
+    this.deviceService.getSnType().then(
+      res => {
+        for (let i = 0; i < res.result.length; i++) {
+          this.snArr.push( res.result[i].type);
+        }
+        console.log(this.snArr);
+      }
+    );
+  }
   // 批量激活
   allActivate() {
     for (let i = 0; i < this.imeiSearchData.length; i ++) {
@@ -180,7 +231,7 @@ export class ActivateComponent implements OnInit {
     );
   }
 
-  // 滚动用
+  // TODO:滚动用
   scroll() {
     function getScrollTop() {
       let scrollTop = 0;
@@ -205,7 +256,7 @@ export class ActivateComponent implements OnInit {
       this.validateForm.addControl(i.control, new FormControl());
       this.search();
       this.getSnType();
-      this.scroll();
+      // this.scroll();
     }
   }
 
