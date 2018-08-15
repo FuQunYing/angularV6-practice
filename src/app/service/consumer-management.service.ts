@@ -21,7 +21,7 @@ export class ConsumerManagementService {
    * @param body
    * @returns {Promise<any>}
    */
-  public getCrdInfo(body): Promise<any> {
+  public getCardInfo(body): Promise<any> {
     const uri = '/api/v1/cardno/query';
     return this.http.post(uri, body, {headers: this.header})
       .toPromise()
