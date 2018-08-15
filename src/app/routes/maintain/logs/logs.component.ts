@@ -5,10 +5,7 @@ import {Component} from '@angular/core';
   template: `
     <nz-card [nzBordered]="false" [nzHoverable]="true">
       <nz-tabset>
-        <nz-tab *ngFor="let tab of tabs">
-          <ng-template #nzTabHeading>
-            {{tab.name}}
-          </ng-template>
+        <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name">
           <markdown path="{{tab.content}}"></markdown>
         </nz-tab>
       </nz-tabset>
@@ -16,6 +13,7 @@ import {Component} from '@angular/core';
   `
 })
 export class LogsComponent {
+  // TODO:目前内容一样
   tabs = [
     {
       name   : 'MDB',
