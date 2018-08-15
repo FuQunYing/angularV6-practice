@@ -21,9 +21,9 @@
     </form>
 </nz-card>
 
-<nz-card [nzBordered]="false" [nzHoverable]="true"  style="margin-top: 16px;">
+<nz-card [nzBordered]="false" [nzHoverable]="true"  style="margin-top: 16px;" *ngIf="showBoxFlag">
     <!-- 展示列表 -->
-    <div style="margin-top: 16px;" *ngIf="showBoxFlag">
+    <div style="margin-top: 16px;" >
       <nz-table class="query-table" #nzTable [nzData]="imeiSearchData" [nzPageSize]="30" style="margin-top: 16px;" [nzShowPagination]='true'>
         <thead class="center">
         <tr>
