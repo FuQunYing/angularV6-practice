@@ -3,17 +3,15 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-logs',
   template: `
-    <nz-card [nzBordered]="false" [nzNoHovering]="true">
-      <ng-template #body>
-        <nz-tabset>
-          <nz-tab *ngFor="let tab of tabs">
-            <ng-template #nzTabHeading>
-              {{tab.name}}
-            </ng-template>
-            <markdown path="{{tab.content}}"></markdown>
-          </nz-tab>
-        </nz-tabset>
-      </ng-template>
+    <nz-card [nzBordered]="false" [nzHoverable]="true">
+      <nz-tabset>
+        <nz-tab *ngFor="let tab of tabs">
+          <ng-template #nzTabHeading>
+            {{tab.name}}
+          </ng-template>
+          <markdown path="{{tab.content}}"></markdown>
+        </nz-tab>
+      </nz-tabset>
     </nz-card>
   `
 })
