@@ -4,11 +4,13 @@ import {SharedModule} from '../../shared/shared.module';
 import { ComplainComponent } from './complain/complain.component';
 import { QueryComponent } from './query/query.component';
 import {AuthGuardService} from '../../service/auth-guard.service';
+import { SellgoodComponent } from './sellgood/sellgood.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'query', pathMatch: 'full', canActivate: [AuthGuardService]},
   {path: 'query', component: QueryComponent, canActivate: [AuthGuardService]},
-  {path: 'complain', component: ComplainComponent, canActivate: [AuthGuardService]}
+  {path: 'complain', component: ComplainComponent, canActivate: [AuthGuardService]},
+  { path: 'sellgood', component: SellgoodComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({
@@ -18,7 +20,8 @@ const routes: Routes = [
   ],
   declarations: [
     ComplainComponent,
-    QueryComponent
+    QueryComponent,
+    SellgoodComponent
   ],
   exports: [
     RouterModule

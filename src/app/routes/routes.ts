@@ -35,7 +35,12 @@ export const ROUTER_LIST = {
         {
           'label': 'query',
           'path': 'order/query',
-          'zh': '订单查询'
+          'zh': 'ytb订单查询'
+        },
+        {
+          'label': 'sellgood',
+          'path': 'order/sellgood',
+          'zh': 'yhd订单查询'
         },
         {
           'label': 'complain',

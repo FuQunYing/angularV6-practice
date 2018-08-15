@@ -1,3 +1,111 @@
-<p>
-  query works!
-</p>
+<nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name">
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row [nzGutter]="40">
+        <div nz-col [nzSpan]="8" *ngFor="let control of controlArray">
+          <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSpan]="5" [attr.for]="control.contorl">{{control.name}}</nz-form-label>
+            <nz-form-control nz-col [nzSpan]="19">
+              <input nz-input   [placeholder]="control.name" [formControlName]="control.contorl" [id]="control.contorl">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]='8'>
+          <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSpan]="5">开始时间</nz-form-label>
+            <nz-form-control nz-col [nzSpan]="19">
+              <nz-date-picker  style="width: 100%;" formControlName="start_time" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'开始时间'"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]='8'>
+          <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSpan]="5">结束时间</nz-form-label>
+            <nz-form-control nz-col [nzSpan]="19">
+              <nz-date-picker  style="width: 100%;" formControlName="end_time" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'结束时间'"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="24" style="text-align: center;">
+          <button nz-button [nzType]="'primary'" (click)="_query();false" type="button">搜索</button>
+          <button nz-button (click)="resetForm()" style="margin-left: 10px">清空</button>
+        </div>
+      </div>
+    </form>
+</nz-card>
+
+<!-- 展示列表 -->
+<nz-card [nzBordered]="false" [nzHoverable]="true" style="margin-top: 16px;" *ngIf="showBoxFlag">
+      <nz-table #nzTable [nzData]='orderinfoData' [nzPageSize]="20" [nzLoading]='tableLoadingFlag' [nzShowPagination]="false">
+        <thead>
+        <tr>
+          <th><span>单号</span></th>
+          <th><span>订单类型</span></th>
+          <th><span>卡号</span></th>
+          <th><span>SN</span></th>
+          <th><span>客户端</span></th>
+          <th><span>DEV_MCODE</span></th>
+          <th  style="text-align: center;">支付<span>(元)</span></th>
+          <th  style="text-align: center;">找零<span>(元)</span></th>
+          <th  style="text-align: center;">卡余额<span>(元)</span></th>
+          <th><span>时间</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of nzTable.data">
+          <td >
+            {{data.ordernum}}
+          </td>
+          <td >
+            <div [ngSwitch]="data.ordertype">
+              <div *ngSwitchCase="1" nz-tooltip="点击查看第三方支付单号" style="cursor: pointer;font-weight: bold" (click)="info(data.no3)">第三方支付</div>
+              <div *ngSwitchCase="2">上分成功</div>
+              <div *ngSwitchCase="3"> 找零成功</div>
+              <div *ngSwitchCase="11">虚拟充值</div>
+              <div *ngSwitchCase="12">虚拟上分</div>
+              <div *ngSwitchCase="13">虚拟消费</div>
+              <div *ngSwitchDefault>{{data.ordertype}}</div>
+            </div>
+          </td>
+          <td >{{data.cardno}}
+          </td>
+          <td >{{data.sn}}
+          </td>
+          <td >
+            <div [ngSwitch]="data.client">
+              <div *ngSwitchCase="1">微信</div>
+              <div *ngSwitchCase="2"><i class="anticon anticon-alipay"></i>支付宝</div>
+              <div *ngSwitchDefault>未知</div>
+            </div>
+          </td>
+          <td >
+            {{data.mcode}}
+          </td>
+          <td  style="text-align: center;">
+            <div [ngSwitch]="data.fee">
+              <div *ngSwitchCase="0">¥0</div>
+              <div *ngSwitchDefault>¥{{data.fee/100}}</div>
+            </div>
+          </td>
+          <td  style="text-align: center;">
+            ¥{{data.charge/100}}
+          </td>
+          <td  style="text-align: center;">
+            ¥{{data.balance/100}}
+          </td>
+          <td >
+            {{data.createTime}}
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+      <div style="margin-top: 16px;">
+        <nz-pagination [nzPageIndex]="oldIndex" [nzTotal]="total" [nzPageSize]="20" nzShowQuickJumper (click)='clickIndex()' [(nzPageIndex)]='index' *ngIf='showBoxFlag'></nz-pagination>
+      </div>
+</nz-card>
+
+<nz-spin [nzTip]="'正在读取数据...'" *ngIf="loadingFlag">
+  <div style="width: 100%; height: 100px;"></div>
+</nz-spin>
+

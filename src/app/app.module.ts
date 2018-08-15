@@ -8,6 +8,10 @@ import {SharedModule} from './shared/shared.module';
 import {LayoutModule} from './layout/layout.module';
 import {CoreModule} from './core/core.module';
 
+import {registerLocaleData} from '@angular/common';
+import zh from '@angular/common/locales/zh';
+
+registerLocaleData(zh);
 
 @NgModule({
   declarations: [

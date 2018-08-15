@@ -28,7 +28,7 @@
       </div>
       <div nz-col [nzSpan]="11">
         <nz-form-item nz-row>
-          <nz-form-label nz-col [nzSpan]="4">
+          <nz-form-control nz-col [nzSpan]="4">
             <div [ngSwitch]="state[idx].bindReault">
               <div *ngSwitchCase="0">
                 <i class="anticon anticon-check-circle-o" style="color: green"></i>绑定成功
@@ -43,8 +43,8 @@
                 <i class="anticon anticon-clock-circle-o"></i>未绑定
               </div>
             </div>
-          </nz-form-label>
-          <nz-form-label nz-col [nzSpan]="3">sn:</nz-form-label>
+          </nz-form-control>
+          <nz-form-label nz-col [nzSpan]="3">sn</nz-form-label>
           <nz-form-control nz-col [nzSpan]="11">
             <input type="text" maxlength="13" (blur)="snBlur(idx)" nz-input class="sn">
           </nz-form-control>
@@ -58,7 +58,7 @@
       </div>
       <div nz-col [nzSpan]="11">
         <nz-form-item nz-row>
-          <nz-form-label nz-col [nzSpan]="3">imei:</nz-form-label>
+          <nz-form-label nz-col [nzSpan]="3">imei</nz-form-label>
           <nz-form-control nz-col [nzSpan]="12">
             <input type="text" maxlength="15" (blur)="imeiBlur(idx)" nz-input class="imei">
           </nz-form-control>
