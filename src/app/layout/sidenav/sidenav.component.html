@@ -17,5 +17,13 @@
         </li>
       </ul>
     </li>
+    <li nz-submenu *ngIf="powerManage">
+      <b [title]><i class="anticon anticon-user"></i>权限管理</b>
+      <ul>
+        <li nz-menu-item routerLinkActive="ant-menu-item-selected">
+          <a routerLink="/power/manage">功能分配</a>
+        </li>
+      </ul>
+    </li>
   </ul>
 </div>

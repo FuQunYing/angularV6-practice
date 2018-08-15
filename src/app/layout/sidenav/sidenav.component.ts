@@ -19,6 +19,7 @@ export class SidenavComponent implements OnInit {
   routerList = ROUTER_LIST; // 路由总表
   componentList = [];
   choose = '';
+  powerManage = false;
 
   constructor( private router: Router, private title: Title, private _cookie: CookieService) { }
 
@@ -35,6 +36,7 @@ export class SidenavComponent implements OnInit {
     this.powerArr = JSON.parse(Arr);
     if ( role === 'admin' ) {
       console.log('超级管理员登录');
+      this.powerManage = true;
     } else {
       // 权限配置
       this.powerArr = this.powerArr.arr;
