@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
         this._cookie.setCookie('login', 'true', 2);
         this.router.navigate(['device']);
         const powerArr = {
-          arr: this.res.result.resource
+          arr: this.res.result.resources
         };
         this._cookie.setStorage('power', JSON.stringify(powerArr));
       }

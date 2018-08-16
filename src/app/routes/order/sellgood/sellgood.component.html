@@ -64,8 +64,8 @@
 </nz-card>
 
 <nz-card [nzBordered]="false" style="border-radius: 8px">
-    <div nz-row [nzGutter]="8" style="margin-bottom: 30px">
-      <div nz-col [nzSpan]="12">
+    <div nz-row [nzGutter]="4" style="margin-bottom: 30px">
+      <div nz-col [nzSpan]="6">
         <nz-card [nzBordered]="false" style="background: #f7f7f7">
             <div class="t-ellipsis">
               <h2>{{(_analysis.alipay.income/100 + _analysis.weixin.income/100 ).toFixed(2) | currency:'￥'}}</h2>
@@ -89,7 +89,7 @@
             </div>
         </nz-card>
       </div>
-      <div nz-col [nzSpan]="12">
+      <div nz-col [nzSpan]="6">
         <nz-card [nzBordered]="false" style="background: #f7f7f7">
             <div class="t-ellipsis">
               <h2>{{_analysis.alipay.sales + _analysis.weixin.sales}}笔</h2>
@@ -113,6 +113,54 @@
             </div>
         </nz-card>
       </div>
+      <nz-col nzSpan="6">
+        <nz-card [nzBordered]="false"  style="background: #f7f7f7" *ngIf="_refund">
+          <div class="t-ellipsis">
+            <h2>{{(_refund.alipay.refund/100 + _refund.weixin.refund/100 ).toFixed(2) | currency:'￥'}}</h2>
+            <span>退款总额</span>
+          </div>
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+            <span class="alipay-pay">
+              <i class="cui cui-alipay"></i>支付宝</span>
+              <span>
+              {{(_refund.alipay.refund/100).toFixed(2) | currency:'￥'}}
+            </span>
+            </div>
+            <div nz-col nzSpan="12">
+            <span class="weixin-pay">
+              <i class="cui cui-weixin"></i>微信</span>
+              <span>
+              {{(_refund.weixin.refund/100).toFixed(2) | currency:'￥'}}
+            </span>
+            </div>
+          </div>
+        </nz-card>
+      </nz-col>
+      <nz-col nzSpan="6">
+        <nz-card [nzBordered]="false"  style="background: #f7f7f7"  *ngIf="_refund">
+          <div class="t-ellipsis">
+            <h2>{{_refund.alipay.count + _refund.weixin.count}}(笔)</h2>
+            <span>退款笔数</span>
+          </div>
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+            <span class="alipay-pay">
+              <i class="cui cui-alipay"></i>支付宝</span>
+              <span>
+              {{_refund.alipay.count}}(笔)
+            </span>
+            </div>
+            <div nz-col nzSpan="12">
+            <span class="weixin-pay">
+              <i class="cui cui-weixin"></i>微信</span>
+              <span>
+              {{_refund.weixin.count}}(笔)
+            </span>
+            </div>
+          </div>
+        </nz-card>
+      </nz-col>
     </div>
 
     <nz-table #nzTable [nzData]="_dataSet" [nzLoading]="_loading"  [nzFrontPagination]="false" [nzTotal]="_total"

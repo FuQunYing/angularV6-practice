@@ -48,6 +48,16 @@ export class SellgoodComponent implements OnInit {
       sales: 0
     }
   };
+  _refund = {
+    weixin: {
+      count: 0,
+      refund: 0
+    },
+    alipay: {
+      count: 0,
+      refund: 0
+    }
+  };
   _loading = false;
   d3pay: any;
   canRefund = false;
@@ -146,6 +156,33 @@ export class SellgoodComponent implements OnInit {
           }
         }
         console.log(this._analysis);
+
+        if ( res.result.refund.alipay && res.result.refund.weixin) {
+          this._refund = res.result.refund;
+        }
+        if ( JSON.stringify(res.result.refund) === '{}') {
+          this._refund = {
+            weixin: {
+              count: 0,
+              refund: 0
+            },
+            alipay: {
+              count: 0,
+              refund: 0
+            }
+          };
+        }
+        if ( res.result.refund.weixin  && !res.result.refund.alipay) {
+          this._refund.weixin = res.result.refund.weixin;
+          this._refund.alipay.count = 0;
+          this._refund.alipay.refund = 0;
+        }
+        if ( !res.result.refund.weixin  && res.result.refund.alipay) {
+          this._refund.alipay = res.result.refund.alipay;
+          this._refund.weixin.count = 0;
+          this._refund.weixin.refund = 0;
+        }
+        console.log(this._refund);
       }
     });
   }

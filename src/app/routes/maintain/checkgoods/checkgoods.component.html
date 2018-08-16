@@ -1,7 +1,7 @@
 <nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name" [nzExtra]="extra">
   <ng-template #extra>
     <button nz-button [nzType]="'primary'" (click)="handleAllGoods(true)">一键通过</button>
-    <button nz-button [nzType]="'danger'" (click)="handleAllGoods(false)">一键不通过</button>
+    <button nz-button [nzType]="'danger'" (click)="handleAllGoods(false)" style="margin-left: 10px">一键不通过</button>
   </ng-template>
     <!-- 展示表单 -->
     <div style="margin-top: 16px;">
