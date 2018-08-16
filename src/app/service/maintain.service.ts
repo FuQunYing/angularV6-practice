@@ -125,7 +125,7 @@ export class MaintainService {
     const uri = '/api/v1/maintain/good/edit';
     return this.http.post(uri, body, {headers: this.headers})
       .toPromise()
-      .catch(this.handleError)
+      .catch(this.handleError);
   }
 
   /**

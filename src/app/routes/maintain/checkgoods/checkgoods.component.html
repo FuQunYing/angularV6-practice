@@ -1,3 +1,138 @@
-<p>
-  checkgoods works!
-</p>
+<nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name" [nzExtra]="extra">
+  <ng-template #extra>
+    <button nz-button [nzType]="'primary'" (click)="handleAllGoods(true)">一键通过</button>
+    <button nz-button [nzType]="'danger'" (click)="handleAllGoods(false)">一键不通过</button>
+  </ng-template>
+    <!-- 展示表单 -->
+    <div style="margin-top: 16px;">
+      <nz-table class="query-table" #nzTable [nzData]="checkGoodsData" [nzPageSize]="10" *ngIf="showBoxFlag" [nzFrontPagination]='false'>
+        <thead>
+        <tr>
+          <th>
+            <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminate">
+              <span>全选</span>
+            </label>
+          </th>
+          <th>用户ID</th>
+          <th>货物ID</th>
+          <th>图片</th>
+          <th>货物名称</th>
+          <th>货物状态</th>
+          <th>服务时长</th>
+          <th>描述</th>
+          <th>货物规格</th>
+          <th>审核状态</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let data of nzTable.data;let idx=index;">
+        <tr>
+          <td>
+            <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="updateSingleChecked()">
+              <span>{{idx + 1}}</span>
+            </label>
+          </td>
+          <td>{{data.userid}}</td>
+          <td>{{data.goods_id}}</td>
+          <td style="text-align: center">
+            <img [src]='data.img' style="width: 100px;">
+          </td>
+          <td>{{data.goods_name}}</td>
+          <td>
+            <div [ngSwitch]="data.goods_type">
+              <div *ngSwitchCase="2">服务商品</div>
+              <div *ngSwitchCase="1">实体商品</div>
+              <div *ngSwitchDefault>未知</div>
+            </div>
+          </td>
+          <td>
+            <div [ngSwitch]="data.duration">
+              <div *ngSwitchCase="0"></div>
+              <div *ngSwitchDefault>{{data.duration}}</div>
+            </div>
+          </td>
+          <td>{{data.description}}</td>
+          <td>{{data.spec}}</td>
+          <td>
+            <div [ngSwitch]="data.review_status">
+              <div *ngSwitchCase="0"><i class="anticon anticon-exclamation-circle-o"></i>待审核</div>
+              <div *ngSwitchCase="1"><i class="anticon anticon-exclamation-circle-o"></i>审核中</div>
+              <div *ngSwitchCase="2"><i class="anticon anticon-check-circle" style="color:green;"></i>审核通过</div>
+              <div *ngSwitchCase="3"><i class="anticon anticon-close-circle" style="color:red;"></i>审核不通过</div>
+              <div *ngSwitchDefault>未知</div>
+            </div>
+          </td>
+          <td>
+            <div>
+              <button nz-button [nzType]="'primary'" (click)="passReview(data,idx)">
+                <span>通过</span>
+              </button>
+            </div>
+            <div style="margin-top: 6px;">
+              <button nz-button [nzType]="'default'" (click)="showModal(data,idx)">
+                <span>编辑</span>
+              </button>
+            </div>
+            <div style=" margin-top: 6px; ">
+              <button nz-button [nzType]=" 'danger'" (click)="notPassReview(data,idx)">
+                <span>不通过</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+      <nz-spin [nzTip]=" '正在读取数据...' " *ngIf="loadingFlag ">
+        <div style="width: 100%; height: 100px; "></div>
+      </nz-spin>
+    </div>
+    <div style="margin-top: 16px;">
+      <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="total" [nzPageSize]="10" nzShowQuickJumper (click)='clickIndex()' [(nzPageIndex)]='pageIndex' *ngIf='showSearchFlag'></nz-pagination>
+    </div>
+</nz-card>
+
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'编辑商品'" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzOkLoading]='buttonLoading'>
+    <nz-form-item>
+      <form nz-form [nzLayout]="'horizontal'" [formGroup]="validateForm">
+        <!-- 商品名字 -->
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSpan]="6">商品名字</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="14">
+            <input nz-input formControlName="goods_name" [placeholder]="'请输入商品名字'">
+          </nz-form-control>
+        </nz-form-item>
+        <!-- 商品描述 -->
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSpan]="6">商品描述</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="14">
+            <input nz-input formControlName="description" [placeholder]="'描述'">
+          </nz-form-control>
+        </nz-form-item>
+        <!-- 商品类型 -->
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSpan]="6" nz-form-item-required>商品类型</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="14">
+            <nz-select formControlName="goods_type" [nzPlaceHolder]="'请选择商品类型'">
+              <nz-option [nzLabel]="'实体商品'" [nzValue]="1"></nz-option>
+              <nz-option [nzLabel]="'服务类商品'" [nzValue]="0"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- 输入服务时长 -->
+        <nz-form-item nz-row *ngIf="showDuration">
+          <nz-form-label nz-col [nzSpan]="6">输入服务时长</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="14">
+            <nz-input-number formControlName="duration" [nzSize]="'large'" [nzStep]="1" [nzMax]="99" [nzMin]="1"></nz-input-number>
+            <span nz-form-text>(最大值99|单位:分钟)</span>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- 商品规格 -->
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSpan]="6">商品规格</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="14">
+            <input nz-input formControlName="spec" [placeholder]="'请输入商品名字'">
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </nz-form-item>
+</nz-modal>
