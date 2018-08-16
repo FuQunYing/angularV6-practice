@@ -1,3 +1,96 @@
-<p>
-  public works!
-</p>
+<nz-card [nzBordered]="false" [nzHoverable]="true" [nzTitle]="name" [nzExtra]="extra">
+  <ng-template #extra>
+    <a>点击卡片编辑商品</a>
+  </ng-template>
+  <div nz-row>
+    <div nz-col [nzSpan]="24" style="text-align: center;">
+      <button nz-button (click)="add();false" type="button">添加新商品到公有库</button>
+    </div>
+  </div>
+    <!-- 展示数据区域 -->
+    <nz-card [nzBordered]="false" [nzHoverable]="true" style="margin-top: 10px;" *ngIf="showFlag">
+      <div nz-row [nzGutter]="20">
+        <div nz-col [nzSpan]="8" *ngFor="let item of goodsData.data" style="margin-top: 16px;" (click)='showModal("edit","修改商品",item)'>
+          <nz-card style="width:100%; height: 180px; padding: 0px;">
+            <div nz-row>
+              <div nz-col [nzSpan]='8'>
+                <img [src]='item.img' style="width: 100%; max-width: 120px;">
+              </div>
+              <div nz-col [nzSpan]='16'>
+                <h3>商品: {{item.goods_name}}</h3>
+                <h3>价格: ¥{{item.goods_price/100}}元</h3>
+                <!-- <span [ngSwitch]="item.status">
+                  <p *ngSwitchCase="0">0</p>
+                  <p *ngSwitchCase="1"></p>
+                  <p *ngSwitchDefault></p>
+                </span> -->
+                <h3>规格: {{item.spec}}</h3>
+                <h3>描述: {{item.description}}</h3>
+              </div>
+            </div>
+          </nz-card>
+        </div>
+      </div>
+      <div style="margin-top: 16px; text-align: right">
+        <nz-pagination [nzPageIndex]="index" [nzTotal]="total" [nzPageSize]="9" nzShowQuickJumper (click)='clickIndex()' [(nzPageIndex)]='index'></nz-pagination>
+      </div>
+    </nz-card>
+</nz-card>
+
+<!--编辑/添加-->
+<nz-modal [nzVisible]="editModal" [nzTitle]="editTitle" [nzFooter]="null" (nzOnCancel)="handleCancel()">
+  <form nz-form [formGroup]="validateForm">
+    <div nz-row [nzGutter]="40">
+      <div nz-col [nzSpan]="24" *ngFor="let control of controlArray">
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSpan]="5" [attr.for]="control.contorl">{{control.name}}</nz-form-label>
+          <nz-form-control nz-col [nzSpan]="12">
+            <input *ngIf="control.type === 'ninput'" nz-input [placeholder]="control.name" [value]="goods_name" [(ngModel)]='goods_name' [formControlName]="control.contorl" [id]="control.contorl">
+            <input *ngIf="control.type === 'pinput'" nz-input [placeholder]="control.name" [value]="goods_price" [(ngModel)]='goods_price' [formControlName]="control.contorl" [id]="control.contorl">
+            <input *ngIf="control.type === 'dinput'" nz-input [placeholder]="control.name" [value]="desc" [(ngModel)]='desc' [formControlName]="control.contorl" [id]="control.contorl">
+            <input *ngIf="control.type === 'sinput'" nz-input [placeholder]="control.name" [value]="spec" [(ngModel)]='spec' [formControlName]="control.contorl" [id]="control.contorl">
+            <input nz-input *ngIf="control.type === 'img'" [placeholder]="control.name" [value]="imgUrl" [(ngModel)]='imgUrl' [formControlName]="control.contorl" [id]="control.contorl">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div nz-row>
+    <div nz-col [nzSpan]="10" [nzOffset]="'2'">
+      <nz-radio-group [(ngModel)]="goods_type">
+        <label nz-radio-button [nzValue]="1">
+          <span>实体商品</span>
+        </label>
+        <label nz-radio-button [nzValue]="2">
+          <span>服务商品</span>
+        </label>
+      </nz-radio-group>
+    </div>
+  </div>
+  <div nz-row *ngIf="goods_type === 2" style="margin-top: 16px;">
+    <div nz-col [nzSpan]="5" class="ant-form-item-label">
+      <label>服务时长</label>
+    </div>
+    <div nz-col [nzSpan]="12">
+      <nz-input-number [(ngModel)]="duration" [nzMin]="0" [nzMax]="99" [nzStep]="1" style="width: 100%;"></nz-input-number>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="20" *ngIf="imageShow" style="margin-top: 16px;">
+    <div nz-col [nzSpan]="4" *ngFor="let item of imageData">
+      <img [src]='item.url' style="width:100%;" (click)="selectImg($event,item)">
+    </div>
+  </div>
+
+  <nz-spin [nzTip]="'正在读取数据...'" *ngIf='editLoadingFlag'>
+    <div style="width: 100%; height: 85px;"></div>
+  </nz-spin>
+
+  <div class="customize-footer" style="margin-top: 16px;text-align: right">
+    <button nz-button [nzType]="'default'" (click)="handleCancel()" style="margin-right: 10px">返 回</button>
+    <button nz-button [nzType]="'primary'"  (click)="confirmEdit()" [nzLoading]="isLoadingOne">保 存</button>
+  </div>
+</nz-modal>
+
+<nz-spin [nzTip]="'正在读取数据...'" *ngIf="loadingFlag">
+  <div style="width: 100%; height: 100px;"></div>
+</nz-spin>
