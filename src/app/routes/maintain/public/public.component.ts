@@ -1,7 +1,6 @@
 import {Component, OnInit, ElementRef, Input} from '@angular/core';
 import { MaintainService } from '../../../service/service.module';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { EditGoodsComponent } from '../edit-goods/edit-goods.component';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 
 @Component({
