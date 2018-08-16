@@ -164,7 +164,7 @@
     </div>
 
     <nz-table #nzTable [nzData]="_dataSet" [nzLoading]="_loading"  [nzFrontPagination]="false" [nzTotal]="_total"
-              [(nzPageSize)]="_pageSize" [nzShowQuickJumper]="true" (click)='refreshData()' [(nzPageIndex)]='_current' class="query-table">
+              [(nzPageSize)]="_pageSize" [nzShowQuickJumper]="true" (nzPageIndexChange)='refreshData()' [(nzPageIndex)]='_current' class="query-table">
       <thead class="sellgood-thead">
       <tr>
         <th>交易时间</th>
@@ -173,7 +173,7 @@
         <th>交易状态</th>
         <th>订单号</th>
         <th>交易金额</th>
-        <th>设备信息></th>
+        <th>设备信息</th>
         <th>商品</th>
       </tr>
       </thead>
