@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import {SharedModule} from '../../shared/shared.module';
 import {Routes, RouterModule, Router} from '@angular/router';
 import { CheckgoodsComponent } from './checkgoods/checkgoods.component';
-import { EditGoodsComponent } from './edit-goods/edit-goods.component';
 import { LogsComponent } from './logs/logs.component';
 import { NoticeComponent } from './notice/notice.component';
 import { PublicComponent } from './public/public.component';
@@ -22,7 +21,6 @@ const routes: Routes = [
   ],
   declarations: [
     CheckgoodsComponent,
-    EditGoodsComponent,
     LogsComponent,
     NoticeComponent,
     PublicComponent
@@ -31,7 +29,6 @@ const routes: Routes = [
     RouterModule
   ],
   entryComponents: [
-    EditGoodsComponent
   ]
 })
 export class MaintainModule { }
